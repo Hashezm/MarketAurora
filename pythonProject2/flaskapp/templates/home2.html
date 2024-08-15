@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Aurora - Article Extraction and Sentiment Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles2.css') }}">
+    <script src="{{ url_for('static', filename='scripts2.js') }}" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>MarketAurora</h1>
+        <form method="POST" action="/">
+            <input type="text" name="topic" placeholder="Enter a topic..." required>
+            <button type="submit">Analyze</button>
+        </form>
+
+        <div class="sentiment-filters">
+            <a href="?filter=positive">Positive</a>
+            <a href="?filter=neutral">Neutral</a>
+            <a href="?filter=negative">Negative</a>
+            <a href="/" class="remove-filter">Remove Filter</a>
+        </div>
+
+        <div class="sentiment-counts">
+            <div class="count positive">
+                <p>Positive</p>
+                <span>{{ counts['positive'] }}</span>
+            </div>
+            <div class="count neutral">
+                <p>Neutral</p>
+                <span>{{ counts['neutral'] }}</span>
+            </div>
+            <div class="count negative">
+                <p>Negative</p>
+                <span>{{ counts['negative'] }}</span>
+            </div>
+        </div>
+
+        <div class="articles">
+            {% for article in articles %}
+            <div class="article-card {{ article.sentiment }}">
+                <h2>{{ article.title }}</h2>
+                <p>{{ article.description }}</p>
+                <a href="{{ article.url }}" target="_blank">Read more</a>
+                <span class="sentiment {{ article.sentiment }}">{{ article.sentiment }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
