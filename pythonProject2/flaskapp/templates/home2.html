@@ -6,10 +6,15 @@
     <title>Market Aurora - Article Extraction and Sentiment Analysis</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles2.css') }}">
     <script src="{{ url_for('static', filename='scripts2.js') }}" defer></script>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
     <div class="container">
-        <h1>MarketAurora</h1>
+        <div class="logo">
+            <img width="400" height="auto" src="{{ url_for('static', filename='logonobg.png') }}" alt="Market Aurora Logo">
+        </div>
+
+<!--        <h1>MarketAurora</h1>-->
         <form method="POST" action="/">
             <input type="text" name="topic" placeholder="Enter a topic..." required>
             <button type="submit">Analyze</button>
@@ -46,6 +51,10 @@
                 <span class="sentiment {{ article.sentiment }}">{{ article.sentiment }}</span>
             </div>
             {% endfor %}
+        </div>
+        <div class="about-section">
+            <h2>About MarketAurora</h2>
+            <p>MarketAurora uses a Convolutional Neural Network (CNN) trained on over 1.8 million data points to filter market sentiment. The app connects to the NewsAPI to extract daily articles, which are then processed through an automated ETL (Extract, Transform, Load) pipeline. The data is fed into the model, which fetches results and displays them here, providing users with up-to-date sentiment analysis.</p>
         </div>
     </div>
 </body>
