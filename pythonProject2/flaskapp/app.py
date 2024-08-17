@@ -8,7 +8,7 @@ import hashlib
 app = Flask(__name__)
 
 #need to change this to amazon when container is pushed
-FASTAPI_URL = 'http://127.0.0.1:5000/analyze/'
+FASTAPI_URL = 'http://3.148.103.194:8000/analyze/'
 
 # aws S3 configuration
 s3 = boto3.client('s3')
@@ -17,7 +17,7 @@ BUCKET_NAME = 'queries-for-marketaurora'
 
 def query_to_key(query):
     """generate a unique key for the S3 file based on the query."""
-    return f"{hashlib.md5(query.encode()).hexdigest()}.json"
+    return f"{query}.json"
 
 
 def get_results_from_s3(query):
@@ -40,32 +40,33 @@ def save_results_to_s3(query, results):
 def home():
     articles = []
     sentiments = []
-    filter_sentiment = request.args.get('filter')  # get the sentiment filter from URL parameters
-
+    filter_sentiment = request.args.get('filter')  # Get the sentiment filter from URL parameters
+    print(filter_sentiment)
     if request.method == 'POST':
         topic = request.form.get('topic')
+        print(filter_sentiment)
+        if topic:
+            # Check if results are in S3
+            existing_results = get_results_from_s3(topic)
 
-        # check if results in S3
-        existing_results = get_results_from_s3(topic)
+            if existing_results:
+                articles = existing_results
+            else:
+                # If not, process the query using FastAPI
+                response = requests.get(FASTAPI_URL, params={'topic': topic})
+                if response.status_code == 200:
+                    articles = response.json().get('articles', [])
+                    # Save the new results to S3
+                    save_results_to_s3(topic, articles)
 
-        if existing_results:
-            articles = existing_results
-        else:
-            # if not, process the query using FastAPI
-            response = requests.get(FASTAPI_URL, params={'topic': topic})
-            if response.status_code == 200:
-                articles = response.json().get('articles', [])
-
-                # save the new results to S3
-                save_results_to_s3(topic, articles)
-
-        for article in articles:
-            sentiments.append(article['sentiment'])
-
-    counts = Counter(sentiments)  # count sentiments
-
-    if filter_sentiment:
+    if filter_sentiment and articles:
+        # Filter the articles only if they exist and a filter is applied
         articles = [article for article in articles if article['sentiment'] == filter_sentiment]
+
+    # Count the sentiments of the articles
+    for article in articles:
+        sentiments.append(article['sentiment'])
+    counts = Counter(sentiments)  # Sentiments counter dictionary
 
     return render_template('home2.html', articles=articles, counts=counts, filter_sentiment=filter_sentiment)
 

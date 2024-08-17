@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market Hawk - Article Extraction and Sentiment Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles3.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-
 </head>
 <body>
     <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logonobg.png') }}" alt="Market Hawk Logo">
+        </div>
+
         <h1>Market Hawk</h1>
 
         <form method="POST">
-            <input type="text" name="topic" placeholder="Enter a topic">
+            <input type="text" name="topic" placeholder="Enter a topic" required>
             <button type="submit">Analyze</button>
         </form>
 
-        <div class="btn-group">
+        <div class="sentiment-filters btn-group">
             <a href="/?filter=negative" class="btn btn-negative">Negative: {{ counts['negative'] }}</a>
             <a href="/?filter=neutral" class="btn btn-neutral">Neutral: {{ counts['neutral'] }}</a>
             <a href="/?filter=positive" class="btn btn-positive">Positive: {{ counts['positive'] }}</a>
@@ -27,11 +30,11 @@
         </div>
 
         <h2>Articles | Filter: {{ filter_sentiment }}</h2>
-        <div>
+        <div class="articles">
             {% if articles %}
                 <ul>
                     {% for article in articles %}
-                        <li>
+                        <li class="article-card {{ article.sentiment }}">
                             <h3>{{ article.title }}</h3>
                             <p>{{ article.description }}</p>
                             <p><strong>Sentiment:</strong> {{ article.sentiment }}</p>
@@ -42,6 +45,11 @@
             {% else %}
                 <p>No articles found. Try searching for a different topic.</p>
             {% endif %}
+        </div>
+
+        <div class="about-section">
+            <h2>About Market Hawk</h2>
+            <p>Market Hawk uses a Convolutional Neural Network (CNN) trained on over 1.8 million data points to filter market sentiment. The app connects to the NewsAPI to extract daily articles, which are then processed through an automated ETL (Extract, Transform, Load) pipeline. The data is fed into the model, which fetches results and displays them here, providing users with up-to-date sentiment analysis.</p>
         </div>
     </div>
 </body>

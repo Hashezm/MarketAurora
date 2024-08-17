@@ -5,4 +5,5 @@ newsapi-python
 nltk
 numpy==1.21.6
 uvicorn
+slowapi
 

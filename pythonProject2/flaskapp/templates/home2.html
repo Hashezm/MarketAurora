@@ -14,17 +14,18 @@
             <img width="400" height="auto" src="{{ url_for('static', filename='logonobg.png') }}" alt="Market Aurora Logo">
         </div>
 
-<!--        <h1>MarketAurora</h1>-->
-        <form method="POST" action="/">
-            <input type="text" name="topic" placeholder="Enter a topic..." required>
+        <form method="POST">
+            <input type="text" name="topic" placeholder="Enter a topic..." required value="{{ request.form.get('topic') or '' }}">
             <button type="submit">Analyze</button>
         </form>
 
         <div class="sentiment-filters">
-            <a href="?filter=positive">Positive</a>
-            <a href="?filter=neutral">Neutral</a>
-            <a href="?filter=negative">Negative</a>
-            <a href="/" class="remove-filter">Remove Filter</a>
+            <a href="/?topic={{ request.form.get('topic') or request.args.get('topic') }}&filter=positive" class="btn btn-positive">Positive</a>
+            <a href="/?topic={{ request.form.get('topic') or request.args.get('topic') }}&filter=neutral" class="btn btn-neutral">Neutral</a>
+            <a href="/?topic={{ request.form.get('topic') or request.args.get('topic') }}&filter=negative" class="btn btn-negative">Negative</a>
+            {% if filter_sentiment %}
+                <a href="/?topic={{ request.form.get('topic') or request.args.get('topic') }}" class="btn btn-remove">Remove Filter</a>
+            {% endif %}
         </div>
 
         <div class="sentiment-counts">
@@ -41,7 +42,7 @@
                 <span>{{ counts['negative'] }}</span>
             </div>
         </div>
-
+<h2> Filter: {{ filter_sentiment }}</h2>
         <div class="articles">
             {% for article in articles %}
             <div class="article-card {{ article.sentiment }}">
@@ -52,6 +53,7 @@
             </div>
             {% endfor %}
         </div>
+
         <div class="about-section">
             <h2>About MarketAurora</h2>
             <p>MarketAurora uses a Convolutional Neural Network (CNN) trained on over 1.8 million data points to filter market sentiment. The app connects to the NewsAPI to extract daily articles, which are then processed through an automated ETL (Extract, Transform, Load) pipeline. The data is fed into the model, which fetches results and displays them here, providing users with up-to-date sentiment analysis.</p>

@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi import Request
+
 import tensorflow as tf
 from tensorflow.keras.layers import TextVectorization
 from newsapi import NewsApiClient
@@ -6,13 +8,15 @@ from datetime import datetime, timedelta
 from config import getAPI
 import re
 from nltk.corpus import stopwords
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
+model = tf.keras.models.load_model('model-best')  # load best model trained in the jupyter notebook
 
-model = tf.keras.models.load_model('model-best') # load best model trained in the jupyter notebook
-
-app = FastAPI() # initialize FastAPI application
+app = FastAPI()  # initialize FastAPI application
 
 print(model.summary())
+
 
 def preprocess(text):
     text = text.lower()
@@ -121,8 +125,13 @@ def run_model(inp):
 
     return output
 
+
+limiter = Limiter(key_func=get_remote_address) # limiter based on user ip
+
+
 @app.get("/analyze/")
-async def analyze_topic(topic: str):
+@limiter.limit("5/minute")  # use limiter to allow each ip 5 per minute
+async def analyze_topic(request: Request, topic: str):
     # run with the provided topic
     result = run_model(topic)
     return result
