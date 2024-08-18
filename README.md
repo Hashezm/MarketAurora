@@ -20,7 +20,7 @@ Before you begin, make sure you have the following:
 Clone the MarketAurora repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/marketaurora.git
+git clone https://github.com/Hashezm/MarketAurora.git
 cd marketaurora
 ```
 ### 2. Get Your NewsAPI Key
@@ -58,4 +58,53 @@ COMPANIES = ['apple', 'microsoft', 'amazon']  # Add the companies you're interes
 # etl-dag.py
 BUCKET_NAME = 'your_s3_bucket_name_here'
 ```
-### 6. 
+### 6. Connect Amazon Credentials
+- Ensure your machine is configured with AWS credentials using the AWS CLI:
+```bash
+aws configure
+```
+### 7. Update S3 Bucket in app.py
+```python
+# app.py
+BUCKET_NAME = 'your_s3_bucket_name_here'
+```
+### 8. Install Dependences
+```python
+pip install -r requirements.txt
+#make sure to install dependencies for each file individually if this doesn't cover the requirements
+```
+### 9. Containerize FastAPI (Optional)
+- If you want to containerize the FastAPI app:
+```bash
+docker build -t marketaurora-fastapi .
+docker run -p 8000:8000 marketaurora-fastapi
+```
+### 10. Run the ETL Pipeline
+- Start the Airflow scheduler and webserver:
+```bash
+airflow scheduler
+airflow webserver
+```
+- I recommend to monitor the ETL process in the Airflow UI, lots of companies could lead to resource problems.
+
+### additional settings:
+-  There is the option to change parameters of airflow runtimes for each task
+-  There is the option to change the limiter for the FastAPI API.py to allow more requests.
+
+### FastAPI documentation:
+![image](https://github.com/user-attachments/assets/58a8efc4-0341-4018-99fe-7a9c37e10de2)
+![image](https://github.com/user-attachments/assets/b7eb0a7b-defb-4c71-ab42-10b3a685cc60)
+
+
+### Contributing
+
+We welcome contributions to MarketAurora! If you would like to contribute, please follow these guidelines:
+
+- **Submit Issues**: Use the [GitHub Issues](https://github.com/Hashezm/MarketAurora/issues) to report bugs or request features.
+- **Pull Requests**: Fork the repository, create a new branch for your feature or bugfix, and submit a pull request. Please ensure your code follows the project’s coding standards.
+- **Coding Standards**: Follow PEP 8 for Python code. Include clear and concise comments and documentation for your code.
+
+### License
+
+This project is licensed under the MIT License. For more details, see the [LICENSE](https://github.com/Hashezm/MarketAurora/blob/main/LICENSE) file in the repository.
+
