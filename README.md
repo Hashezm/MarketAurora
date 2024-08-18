@@ -1,10 +1,10 @@
 ﻿# MarketAurora
 ### Project Overview
 
-MarketAurora is a cloud-hosted, end-to-end machine learning solution designed to provide users with daily insights into financial markets and equities. The project automatically gathers and processes financial news articles, analyzes their sentiment using a CNN model, and makes this information accessible through an API and a web interface. Its key features include a sentiment analysis model, automated ETL pipeline, FastAPI service, and a user-friendly interface for querying and filtering market data.
+MarketAurora is a cloud-hosted, end-to-end machine learning solution designed to provide users with daily insights into financial markets and equities. The project automatically gathers and processes financial news articles, analyzes their sentiment using a custom trained CNN model, and makes this information accessible through an API and a web interface. Its key features include a sentiment analysis model, automated ETL pipeline, FastAPI service, and a user-friendly interface for querying and filtering market data.
 
 ### Screenshots and descriptions:
-As we can see below, MarketAurora has a very pleasant layout. In this sample search,"bitcoin" was the query and it returned results based on financial articles from today.
+As we can see below, MarketAurora has a very pleasant layout. In this sample search,"bitcoin" was the query and it returned results based on financial articles from today. There are also filters that enable the user to retrieve a certain sentiment of articles.
 ![image](https://github.com/user-attachments/assets/5fdc83eb-325d-4148-8189-a439fba90dca)
 
 
