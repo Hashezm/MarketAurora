@@ -8,7 +8,7 @@ import hashlib
 app = Flask(__name__)
 
 #need to change this to amazon when container is pushed
-FASTAPI_URL = 'http://hosted-api:port/analyze/'
+FASTAPI_URL = 'http://3.148.103.194:8000/analyze/'
 
 # aws S3 configuration
 s3 = boto3.client('s3')
@@ -73,4 +73,3 @@ def home():
 
 if __name__ == '__main__':
     app.run(port=8050, debug=True)
-

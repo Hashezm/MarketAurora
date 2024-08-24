@@ -7,10 +7,10 @@ import requests
 
 # initialize the s3 client
 s3 = boto3.client('s3')
-BUCKET_NAME = 'put-your-bucket-here-dear-user'
+BUCKET_NAME = 'queries-for-marketaurora'
 
 # url for our fastapi service
-FASTAPI_URL = 'fast-api-url'
+FASTAPI_URL = 'http://3.148.103.194:8000/analyze/'
 
 # list of companies we'll process every day
 COMPANIES = ['apple']
