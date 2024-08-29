@@ -8,11 +8,11 @@ import hashlib
 app = Flask(__name__)
 
 #need to change this to amazon when container is pushed
-FASTAPI_URL = 'http://3.148.103.194:8000/analyze/'
+FASTAPI_URL = ''
 
 # aws S3 configuration
 s3 = boto3.client('s3')
-BUCKET_NAME = 'queries-for-marketaurora'
+BUCKET_NAME = ''
 
 
 def query_to_key(query):
